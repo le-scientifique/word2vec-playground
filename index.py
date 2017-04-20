@@ -6,7 +6,7 @@ import urlparse
 from optparse import OptionParser
 from BaseHTTPServer import HTTPServer,BaseHTTPRequestHandler
 import gensim # word2vec
-
+from gensim.models.keyedvectors import KeyedVectors
 class http_server:
     def __init__(self, model, port):
         def handler(*args):
@@ -78,8 +78,9 @@ def main(argv):
         parser.error("You should specify model file.")
 
     from BaseHTTPServer import HTTPServer
-    model = gensim.models.Word2Vec.load_word2vec_format(options.model,
-        binary=options.isBinary)
+    model = KeyedVectors.load_word2vec_format(options.model, binary=options.isBinary)
+    #model = gensim.models.Word2Vec.load_word2vec_format(options.model,
+       #binary=options.isBinary)
     model.init_sims(replace=True)
     print 'Model loaded.'
     server = http_server(model,options.port)
